@@ -71,6 +71,8 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
     this.expandContent,
     this.restorationId,
     this.onChanged,
+    this.tabBarMainAxisAlignment,
+    this.tabBarCrossAxisAlignment,
   }) : assert(
           (value != null) ^ (controller != null),
           'Either value or controller must be provided',
@@ -85,6 +87,10 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
   /// The tabs to display.
   /// {@endtemplate}
   final List<ShadTab<T>> tabs;
+
+  final MainAxisAlignment? tabBarMainAxisAlignment;
+
+  final CrossAxisAlignment? tabBarCrossAxisAlignment;
 
   /// {@template ShadTabs.controller}
   /// The controller of the tabs.
@@ -270,7 +276,9 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
     final effectiveExpandContent =
         widget.expandContent ?? tabsTheme.expandContent ?? false;
 
-    Widget tabBar = Row(children: widget.tabs);
+    Widget tabBar = Row(
+      children: widget.tabs,
+    );
 
     if (effectiveTabBarConstraints != null) {
       tabBar = ConstrainedBox(
@@ -304,6 +312,10 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
         builder: (context, _) {
           return Column(
             mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment:
+                widget.tabBarMainAxisAlignment ?? MainAxisAlignment.start,
+            crossAxisAlignment:
+                widget.tabBarCrossAxisAlignment ?? CrossAxisAlignment.start,
             children: [
               ShadDecorator(
                 decoration: effectiveDecoration,
